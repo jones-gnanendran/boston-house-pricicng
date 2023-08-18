@@ -1,0 +1,24 @@
+import numpy as np
+import pandas as pd
+data=pd.read_csv("housing.csv")
+x=data.drop("MEDV",axis=1)
+y=data["MEDV"]
+x.insert(0,"bias",1)
+x=x.values
+y=y.values
+train_percent=0.8
+num_train_samples=int(train_percent*(len(x)))
+num_test_samples=len(x)-num_train_samples
+x_train=x[:num_train_samples]
+x_test=x[num_train_samples:]
+y_train=y[:num_train_samples]
+y_test=y[num_train_samples:]
+def linear_reg(x,y):
+  w=np.linalg.inv(x.T @x)@x.T@y
+  return w;
+w=linear_reg(x_train,y_train)
+y_pred=x_test @ w
+mse=np.mean((y_test-y_pred)**2)
+print(mse)
+
+
